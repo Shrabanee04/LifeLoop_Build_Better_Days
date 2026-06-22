@@ -1,6 +1,7 @@
 package com.example.lifeloopbackend.dto;
 
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,9 +14,8 @@ public class EventRequest {
 
     private String description;
 
-    private String date;
-
-    private String time;
+    private LocalDateTime eventDateTime;
 
     private String type;
+    private Long userId;
 }
