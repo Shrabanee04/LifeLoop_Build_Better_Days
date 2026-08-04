@@ -23,12 +23,24 @@ public class EmailService {
 
         message.setTo(toEmail);
         message.setSubject("Reminder: " + event.getTitle() + " starts soon");
-        message.setText(buildBody(event));
+        message.setText(buildReminderBody(event));
 
         mailSender.send(message);
     }
 
-    private String buildBody(Event event) {
+
+    public void sendWeeklyReport(String toEmail, String reportBody) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(toEmail);
+        message.setSubject("Your LifeLoop Weekly Recap");
+        message.setText(reportBody);
+
+        mailSender.send(message);
+    }
+
+    private String buildReminderBody(Event event) {
 
         String when = event.getEventDateTime() != null
                 ? event.getEventDateTime().format(DISPLAY_FORMAT)
