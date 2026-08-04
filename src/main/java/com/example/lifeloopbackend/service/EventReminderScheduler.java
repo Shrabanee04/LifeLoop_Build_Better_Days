@@ -23,13 +23,7 @@ public class EventReminderScheduler {
     @Value("${lifeloop.reminder.minutes-before:5}")
     private int minutesBefore;
 
-    /**
-     * Runs every minute. Finds events that:
-     *  - haven't been notified yet
-     *  - start within the next `minutesBefore` minutes (and haven't already started)
-     *  - have a user with an email attached
-     * then sends the reminder and marks them as notified so it's never sent twice.
-     */
+
     @Scheduled(fixedRate = 60000)
     public void sendDueReminders() {
 
@@ -52,7 +46,7 @@ public class EventReminderScheduler {
                 event.setNotified(true);
                 eventRepository.save(event);
             } catch (Exception e) {
-                // Don't let one failed email crash the whole scheduled run.
+
                 System.err.println("Failed to send reminder for event "
                         + event.getId() + ": " + e.getMessage());
             }
