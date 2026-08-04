@@ -31,21 +31,32 @@ public class DashboardService {
     @Autowired
     private ExpenseRepository expenseRepository;
 
-    public DashboardResponse getDashboard(){
+    public DashboardResponse getDashboard(Long userId){
 
-        long totalTasks = taskRepository.count();
+        long totalTasks;
+        long totalEvents;
+        long totalJournals;
+        long totalMoodLogs;
+        long totalExpenses;
+        List<Mood> moods;
 
-        long totalEvents = eventRepository.count();
-
-        long totalJournals = journalRepository.count();
-
-        long totalMoodLogs = moodRepository.count();
-
-        long totalExpenses = expenseRepository.count();
+        if (userId != null) {
+            totalTasks = taskRepository.findByUserId(userId).size();
+            totalEvents = eventRepository.findByUserId(userId).size();
+            totalJournals = journalRepository.findByUserId(userId).size();
+            moods = moodRepository.findByUserId(userId);
+            totalMoodLogs = moods.size();
+            totalExpenses = expenseRepository.findByUserId(userId).size();
+        } else {
+            totalTasks = taskRepository.count();
+            totalEvents = eventRepository.count();
+            totalJournals = journalRepository.count();
+            moods = moodRepository.findAll();
+            totalMoodLogs = moods.size();
+            totalExpenses = expenseRepository.count();
+        }
 
         String latestMood = "No Mood Logged";
-
-        List<Mood> moods = moodRepository.findAll();
 
         if(!moods.isEmpty()){
             latestMood =
